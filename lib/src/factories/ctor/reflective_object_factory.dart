@@ -16,8 +16,8 @@ class ReflectiveObjectFactory implements Factory<Object> {
 
   @override
   Object get(InternalActivationContext context) {
-    final positionalArguments = <Object>[];
-    final namedArguments = <Symbol, Object>{};
+    final positionalArguments = <Object?>[];
+    final namedArguments = <Symbol, Object?>{};
     for (final arg in _ctorInfo.args) {
       final value = _generateValues(arg, context);
       if (arg.isNamed) {
@@ -31,7 +31,7 @@ class ReflectiveObjectFactory implements Factory<Object> {
     return result.reflectee;
   }
 
-  Object _generateValues(ArgumentInfo arg, InternalActivationContext context) {
+  Object? _generateValues(ArgumentInfo arg, InternalActivationContext context) {
     final defaultValuesStrategy = context.defaultValuesHandlingStrategy(_ctorInfo.classType);
     switch (defaultValuesStrategy) {
       case DefaultValuesHandlingStrategy.UseAll:
@@ -46,5 +46,5 @@ class ReflectiveObjectFactory implements Factory<Object> {
   }
 
   @override
-  Object getDefaultValue() => null;
+  Object? getDefaultValue() => null;
 }

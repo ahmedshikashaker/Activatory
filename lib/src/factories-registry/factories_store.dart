@@ -12,7 +12,7 @@ class FactoriesStore {
 
   FactoriesStore clone() => FactoriesStore._fromMap(_factories);
 
-  List<Factory> find(ResolveKey key) {
+  List<Factory>? find(ResolveKey key) {
     return _factories[key];
   }
 

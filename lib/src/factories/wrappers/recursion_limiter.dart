@@ -13,7 +13,7 @@ class RecursionLimiter implements Factory<Object>, FactoryWrapper<Object> {
   );
 
   @override
-  Object get(InternalActivationContext context) {
+  Object? get(InternalActivationContext context) {
     if (context.isVisitLimitReached(_type)) {
       return wrapped.getDefaultValue();
     }
@@ -25,5 +25,5 @@ class RecursionLimiter implements Factory<Object>, FactoryWrapper<Object> {
   }
 
   @override
-  Object getDefaultValue() => wrapped.getDefaultValue();
+  Object? getDefaultValue() => wrapped.getDefaultValue();
 }

@@ -106,7 +106,7 @@ class FactoriesProvider {
       throw ActivationException('Declaration of values for enum ${classMirror} not found');
     }
 
-    final allValues = classMirror.getField(declaration.simpleName).reflectee as List;
+    final allValues = classMirror.getField(declaration.simpleName).reflectee as List<Object>;
     if (allValues.isEmpty) {
       throw ActivationException('Enum ${classMirror} values found but empty');
     }
@@ -129,7 +129,7 @@ class FactoriesProvider {
 
   ArgumentInfo constructArgumentInfo(ParameterMirror parameter) {
     final argType = parameter.type.reflectedType;
-    final Object defaultValue = parameter.defaultValue?.reflectee;
+    final Object? defaultValue = parameter.defaultValue?.reflectee;
     final isNamed = parameter.isNamed;
     return ArgumentInfo(defaultValue, isNamed, parameter.simpleName, argType);
   }

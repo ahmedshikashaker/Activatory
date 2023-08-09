@@ -8,9 +8,9 @@ import 'package:test/test.dart';
 
 void main() async {
   group('Attempt #1: using Random class inside test', () {
-    Random _random;
-    _UsersAPIMock _apiMock;
-    UsersManager _manager;
+    late Random _random;
+    late _UsersAPIMock _apiMock;
+    late UsersManager _manager;
     setUp(() {
       _random = Random(DateTime.now().millisecondsSinceEpoch);
       _apiMock = _UsersAPIMock();
@@ -35,7 +35,7 @@ void main() async {
           ..name = 'username $i',
       );
       final user = userDtoItems[_random.nextInt(10)];
-      final userId = UserId(user.id);
+      final userId = UserId(user.id!);
       when(_apiMock.getAll()).thenAnswer((_) => Future.value(userDtoItems));
       // act
       final result = await _manager.getById(userId);
@@ -72,9 +72,9 @@ void main() async {
   });
 
   group('Attempt #2: using handwriten helpers', () {
-    Random _random;
-    _UsersAPIMock _apiMock;
-    UsersManager _manager;
+    late Random _random;
+    late _UsersAPIMock _apiMock;
+    late UsersManager _manager;
 
     setUp(() {
       _random = Random(DateTime.now().millisecondsSinceEpoch);
@@ -101,7 +101,7 @@ void main() async {
       // arrange
       final userDtoItems = List.generate(10, _createRandomUserDto);
       final user = userDtoItems[_random.nextInt(10)];
-      final userId = UserId(user.id);
+      final userId = UserId(user.id!);
       when(_apiMock.getAll()).thenAnswer((_) => Future.value(userDtoItems));
       // act
       final result = await _manager.getById(userId);
@@ -124,9 +124,9 @@ void main() async {
   });
 
   group('Attempt #3: using Activatory', () {
-    Activatory _activatory;
-    _UsersAPIMock _apiMock;
-    UsersManager _manager;
+    late Activatory _activatory;
+    late _UsersAPIMock _apiMock;
+    late UsersManager _manager;
     setUp(() {
       _activatory = Activatory();
       _apiMock = _UsersAPIMock();
@@ -137,7 +137,7 @@ void main() async {
       // arrange
       final userDtoItems = _activatory.getMany<UserDto>(count: 10);
       final user = _activatory.take(userDtoItems);
-      final userId = UserId(user.id);
+      final userId = UserId(user.id!);
       when(_apiMock.getAll()).thenAnswer((_) => Future.value(userDtoItems));
       // act
       final result = await _manager.getById(userId);
@@ -165,16 +165,16 @@ bool _isViewModelMatchUserDto(UserViewModel x, UserDto user) =>
     x.id.value == user.id && x.name == user.name && x.birthDate == user.birthDate;
 
 class UserDto {
-  String name;
-  int id;
-  bool isActive;
-  DateTime birthDate;
-  UserContactsDto userContacts;
+  String? name;
+  int? id;
+  bool? isActive;
+  DateTime? birthDate;
+  UserContactsDto? userContacts;
 }
 
 class UserContactsDto {
-  String email;
-  bool notificationsEnabled;
+  String? email;
+  bool? notificationsEnabled;
 }
 
 class UserId {
@@ -203,10 +203,10 @@ class UsersManager {
 
   Future<List<UserViewModel>> getActiveUsers() async {
     final allItems = await _api.getAll();
-    return allItems.where((x) => x.isActive).map(_convert).toList(growable: false);
+    return allItems.where((x) => x.isActive!).map(_convert).toList(growable: false);
   }
 
-  UserViewModel _convert(UserDto x) => UserViewModel(x.name, UserId(x.id), x.birthDate, x.userContacts.email);
+  UserViewModel _convert(UserDto x) => UserViewModel(x.name!, UserId(x.id!), x.birthDate!, x.userContacts!.email!);
 
   Future<UserViewModel> getById(UserId id) async {
     final allItems = await _api.getAll();
@@ -222,7 +222,7 @@ class MailingRecipientsManager {
 
   Future<List<String>> getRecipientsList() async {
     final items = await _api.getAll();
-    return items.map((x) => x.userContacts.email).toList(growable: false);
+    return items.map((x) => x.userContacts!.email!).toList(growable: false);
   }
 }
 

@@ -15,20 +15,20 @@ import 'test_classes.dart';
 void main() {
   Type _getType<T>() => T;
 
-  Activatory _activatory;
+  late Activatory _activatory;
   setUp(() {
     _activatory = Activatory();
   });
 
-  void _assertComplexObjectIsNotNull(PrimitiveComplexObject obj) {
+  void _assertComplexObjectIsNotNull(PrimitiveComplexObject? obj) {
     expect(obj, isNotNull);
-    expect(obj.dateTimeField, isNotNull);
-    expect(obj.boolField, isNotNull);
-    expect(obj.doubleField, isNotNull);
-    expect(obj.stringField, isNotNull);
-    expect(obj.intField, isNotNull);
-    expect(obj.enumField, isNotNull);
-    expect(TestEnum.values, contains(obj.enumField));
+    expect(obj?.dateTimeField, isNotNull);
+    expect(obj?.boolField, isNotNull);
+    expect(obj?.doubleField, isNotNull);
+    expect(obj?.stringField, isNotNull);
+    expect(obj?.intField, isNotNull);
+    expect(obj?.enumField, isNotNull);
+    expect(TestEnum.values, contains(obj?.enumField));
   }
 
   final supportedPrimitiveTypes = [String, int, bool, double, DateTime, Duration, TestEnum];
@@ -322,9 +322,9 @@ void main() {
       };
       for (final type in primitiveArrayTypes.keys) {
         test(type, () {
-          final items = _activatory.getUntyped(type) as List;
+          final items = _activatory.getUntyped(type) ;
 
-          _assertArray(items, primitiveArrayTypes[type]);
+          _assertArray(items as List<Object>, primitiveArrayTypes[type]!);
         });
       }
     });

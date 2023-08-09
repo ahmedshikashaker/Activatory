@@ -8,7 +8,7 @@ import 'package:activatory/src/value_generator.dart';
 
 class InternalActivationContext implements ActivationContext {
   final ValueGenerator _valueGenerator;
-  final Object _key;
+  final Object? _key;
   final Random _random;
   final List<Type> _stackTrace = <Type>[];
   final TypeCustomizationRegistry _customizationsRegistry;
@@ -21,7 +21,7 @@ class InternalActivationContext implements ActivationContext {
   );
 
   @override
-  Object get key => _key;
+  Object? get key => _key;
 
   @override
   Random get random => _random;

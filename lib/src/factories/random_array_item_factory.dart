@@ -13,5 +13,5 @@ class RandomArrayItemFactory implements Factory<Object> {
   }
 
   @override
-  Object getDefaultValue() => null;
+  Object? getDefaultValue() => null;
 }

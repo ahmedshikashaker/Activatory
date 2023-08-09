@@ -13,5 +13,5 @@ class ExplicitFactory<T> implements Factory<T> {
   }
 
   @override
-  T getDefaultValue() => null;
+  T? getDefaultValue() => null;
 }

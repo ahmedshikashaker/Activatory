@@ -5,7 +5,7 @@ import 'package:activatory/src/internal_activation_context.dart';
 
 class RandomIntFactory implements Factory<int> {
   final Random _random;
-  static final int _maxValue = pow(2, 31);
+  static final int _maxValue = pow(2, 31).toInt();
 
   RandomIntFactory(this._random);
 

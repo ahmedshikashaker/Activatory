@@ -33,7 +33,7 @@ class FactoriesRegistry {
     );
   }
 
-  Factory getFactory(Type type, Object key) {
+  Factory getFactory(Type type, Object? key) {
     final affectedType = _aliasesRegistry.getAlias(type);
 
     final storeKey = ResolveKey(affectedType, key);
@@ -57,11 +57,11 @@ class FactoriesRegistry {
     return getFactory(affectedType, key);
   }
 
-  void _registerUntyped(Factory backend, Type type, {Object key}) {
-    final wrapped = RecursionLimiter(type, backend);
+  void _registerUntyped(Factory backend, Type type, {Object? key}) {
+    final wrapped = RecursionLimiter(type, backend as Factory<Object>);
     final resolveKey = ResolveKey(type, key);
     _store.store(wrapped, resolveKey);
   }
 
-  void register<T>(Factory<T> backend, {Object key}) => _registerUntyped(backend, T, key: key);
+  void register<T>(Factory<T> backend, {Object? key}) => _registerUntyped(backend, T, key: key);
 }

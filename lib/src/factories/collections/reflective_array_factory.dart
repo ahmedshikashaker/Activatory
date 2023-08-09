@@ -5,12 +5,12 @@ import 'package:activatory/src/internal_activation_context.dart';
 
 class ReflectiveArrayFactory extends Factory<List<Object>> {
   final Type _type;
-  static const _emptyConstructorName = Symbol('');
+  static const _emptyConstructorName = Symbol('from');
 
   ReflectiveArrayFactory(this._type);
 
   @override
-  List get(InternalActivationContext context) {
+  List<Object> get(InternalActivationContext context) {
     final value = getDefaultValue();
     // Prevent from creating array of nulls.
     if (context.isVisitLimitReached(_type)) {
@@ -26,6 +26,6 @@ class ReflectiveArrayFactory extends Factory<List<Object>> {
   @override
   List<Object> getDefaultValue() {
     final reflectedList = reflectType(List, [_type]);
-    return (reflectedList as ClassMirror).newInstance(_emptyConstructorName, <Object>[]).reflectee as List;
+    return (reflectedList as ClassMirror).newInstance(_emptyConstructorName, [[]]).reflectee as List<Object>;
   }
 }

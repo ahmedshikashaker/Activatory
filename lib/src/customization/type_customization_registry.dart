@@ -9,7 +9,7 @@ class TypeCustomizationRegistry {
     _store[_defaultKey] = TypeCustomization();
   }
 
-  TypeCustomization getCustomization(Type type, {Object key}) {
+  TypeCustomization getCustomization(Type? type, {Object? key}) {
     final customizationKey = ResolveKey(type, key);
     var result = _store[customizationKey];
     if (result == null) {
@@ -19,7 +19,7 @@ class TypeCustomizationRegistry {
     return result;
   }
 
-  TypeCustomization _getDefaultForType(Type type) {
+  TypeCustomization _getDefaultForType(Type? type) {
     final customizationKey = ResolveKey(type, null);
     var result = _store[customizationKey];
     if (result == null) {
@@ -30,6 +30,6 @@ class TypeCustomizationRegistry {
   }
 
   TypeCustomization _getDefault() {
-    return _store[_defaultKey];
+    return _store[_defaultKey]!;
   }
 }

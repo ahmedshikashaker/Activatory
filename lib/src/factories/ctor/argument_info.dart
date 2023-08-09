@@ -1,5 +1,5 @@
 class ArgumentInfo {
-  final Object defaultValue;
+  final Object? defaultValue;
   final bool isNamed;
   final Symbol name;
   final Type type;

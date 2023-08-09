@@ -1,7 +1,7 @@
 import 'dart:math';
 
 abstract class ActivationContext {
-  Object get key;
+  Object? get key;
 
   Random get random;
 

@@ -21,14 +21,14 @@ class Activatory {
   final Random random;
   final TypeCustomizationRegistry _customizationsRegistry;
   final ReflectiveTypeAliasesRegistry _typeAliasesRegistry;
-  ValueGenerator _valueGenerator;
-  FactoriesRegistry _factoriesRegistry;
+  late ValueGenerator _valueGenerator;
+  late FactoriesRegistry _factoriesRegistry;
 
   /// Creates new instance of Activatory with predefined [seed].
   ///
   /// If [seed] is not passed current time milliseconds since epoch is used.
   Activatory({
-    int seed,
+    int? seed,
   }) : this.fromRandom(Random(seed ?? DateTime.now().millisecondsSinceEpoch));
 
   /// Create new instance of Activatory with predefined [random] generator.
@@ -49,11 +49,11 @@ class Activatory {
 
   /// Creates and returns instance of specified type [T] filled with random data recursively.
   /// Uses [key] to select configuration.
-  T get<T>({Object key}) => getUntyped(T, key: key) as T;
+  T get<T>({Object? key}) => getUntyped(T, key: key) as T;
 
   /// Creates and returns instance of specified [type] filled with random data recursively.
   /// Uses [key] to select configuration.
-  Object getUntyped(Type type, {Object key}) {
+  Object getUntyped(Type type, {Object? key}) {
     final context = _createContext(key);
     return _valueGenerator.createUntyped(type, context);
   }
@@ -61,7 +61,7 @@ class Activatory {
   /// Creates and returns multiple instances of specified [type] filled with random data recursively.
   /// Returns [List] of size [count]. If [count] is not specified default strategy will be used.
   /// Uses [key] to select configuration.
-  List<Object> getManyUntyped(Type type, {int count, Object key}) {
+  List<Object> getManyUntyped(Type type, {int? count, Object? key}) {
     final countToCreate = count ?? _customizationsRegistry.getCustomization(type, key: key).arraySize;
     return List.generate(countToCreate, (int index) => getUntyped(type, key: key));
   }
@@ -69,17 +69,17 @@ class Activatory {
   /// Creates and returns multiple instances of specified type [T] filled with random data recursively.
   /// Returns [List] of size [count]. If [count] is not specified default strategy will be used.
   /// Uses [key] to select configuration.
-  List<T> getMany<T>({int count, Object key}) {
+  List<T> getMany<T>({int? count, Object? key}) {
     final dynamicResult = getManyUntyped(T, count: count, key: key);
     //Cast result from List<dynamic> to List<T> through array creation
     return List<T>.from(dynamicResult);
   }
 
   /// Returns one random item from [variations] excluding items from [except].  [variations] and [except] will be iterated while choosing item.
-  Object takeUntyped(Iterable variations, {Iterable except}) =>
+  Object takeUntyped(Iterable variations, {Iterable? except}) =>
       takeManyUntyped(variations, count: 1, except: except).first;
 
-  Object _take(Iterable variations) {
+  Object? _take(Iterable variations) {
     final items = variations.toList(growable: false);
     if (items.isEmpty) {
       throw ArgumentError('Cant take element from empty Iterable');
@@ -89,17 +89,17 @@ class Activatory {
   }
 
   /// Returns one random item from [variations] excluding items from [except].  [variations] and [except] will be iterated while choosing item.
-  T take<T>(Iterable<T> variations, {Iterable<T> except}) => takeUntyped(variations, except: except) as T;
+  T take<T>(Iterable<T> variations, {Iterable<T>? except}) => takeUntyped(variations, except: except) as T;
 
   /// Returns [count] random items from [variations] excluding items from [except].  [variations] and [except] will be iterated while choosing item.
-  List<Object> takeManyUntyped(Iterable variations, {int count, Iterable except}) {
+  List<Object> takeManyUntyped(Iterable variations, {int? count, Iterable? except}) {
     // ignore: prefer_collection_literals
     final filteredVariations = variations.toSet().difference(except?.toSet() ?? Set<Object>());
-    return List.generate(count, (_) => _take(filteredVariations));
+    return List.generate(count??0, (_) => _take(filteredVariations)!);
   }
 
   /// Returns [count] random items from [variations] excluding items from [except].  [variations] and [except] will be iterated while choosing item.
-  List<T> takeMany<T>(Iterable<T> variations, {int count, Iterable<T> except}) {
+  List<T> takeMany<T>(Iterable<T> variations, {int? count, Iterable<T>? except}) {
     final dynamicResult = takeManyUntyped(variations, count: count, except: except);
     //Cast result from List<dynamic> to List<T> through array creation
     return List<T>.from(dynamicResult);
@@ -110,7 +110,7 @@ class Activatory {
   // region Customization members
 
   /// Registers function to be called to activate instance of type [T] with [key].
-  void useFunction<T>(FactoryDelegate<T> generator, {Object key}) {
+  void useFunction<T>(FactoryDelegate<T> generator, {Object? key}) {
     final backend = ExplicitFactory<T>(generator);
     _factoriesRegistry.register<T>(backend, key: key);
   }
@@ -119,7 +119,7 @@ class Activatory {
   ///
   /// Uses current state of customization for [key]. Subsequent customization changes will not affect fixed value.
   /// To override fixed value call this method again.
-  void useGeneratedSingleton<T>({Object key}) {
+  void useGeneratedSingleton<T>({Object? key}) {
     final detachedContext = _factoriesRegistry.clone();
     final context = _createContext(null);
     final currentFactory = detachedContext.getFactory(T, context.key);
@@ -129,12 +129,12 @@ class Activatory {
   }
 
   /// Fixes passed [value] as a result for subsequent activation calls for type [T] with customization [key].
-  void useSingleton<T>(T value, {Object key}) {
+  void useSingleton<T>(T value, {Object? key}) {
     final factory = SingletonFactory<T>(value);
     _factoriesRegistry.register<T>(factory, key: key);
   }
 
-  void useOneOf<T>(Iterable<T> values, {Object key}) {
+  void useOneOf<T>(Iterable<T> values, {Object? key}) {
     final factory = OneOfFactory<T>(random, values.toList(growable: false));
     _factoriesRegistry.register<T>(factory, key: key);
   }
@@ -155,10 +155,10 @@ class Activatory {
   ///  * if key is not provided as parameter for activation call;
   ///  * if key specified while activation call was not configured.
   ///  Use returned value to customize activation options for type [T] and [key] pair.
-  TypeCustomization customize<T>({Object key}) => _customizationsRegistry.getCustomization(T, key: key);
+  TypeCustomization customize<T>({Object? key}) => _customizationsRegistry.getCustomization(T, key: key);
 
   //endregion
 
-  InternalActivationContext _createContext(Object key) =>
+  InternalActivationContext _createContext(Object? key) =>
       InternalActivationContext(_valueGenerator, random, key, _customizationsRegistry);
 }

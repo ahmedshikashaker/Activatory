@@ -34,17 +34,17 @@ class DefaultCtor {
 class DefaultNamedValues {
   static const String defaultValue = 'defaultValue is not generated';
 
-  String _nullSetString;
-  PrimitiveComplexObject _notSetObject;
+  String? _nullSetString;
+  PrimitiveComplexObject? _notSetObject;
 
-  PrimitiveComplexObject _nullSetObject;
+  PrimitiveComplexObject? _nullSetObject;
 
-  String _notNullSetString;
+  late String _notNullSetString;
 
   DefaultNamedValues(
-      {PrimitiveComplexObject notSetObject,
-      PrimitiveComplexObject nullSetObject = null, // ignore: avoid_init_to_null
-      String nullSetString = null, // ignore: avoid_init_to_null
+      {PrimitiveComplexObject? notSetObject,
+      PrimitiveComplexObject? nullSetObject = null, // ignore: avoid_init_to_null
+      String? nullSetString = null, // ignore: avoid_init_to_null
       String notNullSetString = defaultValue}) {
     _nullSetString = nullSetString;
     _notSetObject = notSetObject;
@@ -52,21 +52,21 @@ class DefaultNamedValues {
     _notNullSetString = notNullSetString;
   }
 
-  PrimitiveComplexObject get notSetObject => _notSetObject;
+  PrimitiveComplexObject? get notSetObject => _notSetObject;
 
-  PrimitiveComplexObject get nullSetObject => _nullSetObject;
+  PrimitiveComplexObject? get nullSetObject => _nullSetObject;
 
-  String get nullSetString => _nullSetString;
+  String? get nullSetString => _nullSetString;
 
   String get notNullSetString => _notNullSetString;
 }
 
 class DefaultPositionalValues {
   static const String defaultStringValue = 'default value is not overriden';
-  final String _nullSetString;
+  final String? _nullSetString;
   final String _notNullString;
-  final PrimitiveComplexObject _notSetObject;
-  final PrimitiveComplexObject _nullSetObject;
+  final PrimitiveComplexObject? _notSetObject;
+  final PrimitiveComplexObject? _nullSetObject;
 
   DefaultPositionalValues(
       [this._notSetObject,
@@ -74,18 +74,18 @@ class DefaultPositionalValues {
       this._nullSetString = null, // ignore: avoid_init_to_null
       this._notNullString = defaultStringValue]);
 
-  PrimitiveComplexObject get notSetObject => _notSetObject;
+  PrimitiveComplexObject? get notSetObject => _notSetObject;
 
-  PrimitiveComplexObject get nullSetObject => _nullSetObject;
+  PrimitiveComplexObject? get nullSetObject => _nullSetObject;
 
-  String get nullSetStringValue => _nullSetString;
+  String? get nullSetStringValue => _nullSetString;
 
   String get notNullSetStringValue => _notNullString;
 }
 
 class FactoryCtor {
   String _stringField;
-  String _nonFactoryField;
+  String? _nonFactoryField;
 
   factory FactoryCtor(String stringField) {
     return FactoryCtor._internal(stringField, null);
@@ -93,7 +93,7 @@ class FactoryCtor {
 
   FactoryCtor._internal(this._stringField, this._nonFactoryField);
 
-  String get nonFactoryField => _nonFactoryField;
+  String? get nonFactoryField => _nonFactoryField;
 
   String get stringField => _stringField;
 }
@@ -193,7 +193,7 @@ class NamedCtorsAndDefaultCtor {
 }
 
 class NamedCtorsAndFactory {
-  String _field;
+  late String _field;
 
   factory NamedCtorsAndFactory(String arg) {
     return NamedCtorsAndFactory._internal(arg);
@@ -278,19 +278,19 @@ abstract class ParentClass {}
 class ChildClass extends ParentClass {}
 
 class FiledsWithPublicSetters {
-  final String _finalField;
+  final String? _finalField;
 
-  String get finalField => _finalField;
+  String? get finalField => _finalField;
 
   FiledsWithPublicSetters(this._finalField);
 
-  String publicField;
+  String? publicField;
 
-  String _publicProperty;
+  String? _publicProperty;
 
-  String get publicProperty => _publicProperty; //ignore: unnecessary_getters_setters
+  String? get publicProperty => _publicProperty; //ignore: unnecessary_getters_setters
 
-  set publicProperty(String value) => _publicProperty = value; //ignore: unnecessary_getters_setters
+  set publicProperty(String? value) => _publicProperty = value; //ignore: unnecessary_getters_setters
 }
 
 class SetInCtor {

@@ -11,7 +11,7 @@ class ReflectiveMapFactory implements Factory<Map<Object, Object>> {
   ReflectiveMapFactory(this._keyType, this._valueType);
 
   @override
-  Map get(InternalActivationContext context) {
+  Map<Object , Object> get(InternalActivationContext context) {
     final result = createEmptyMap();
     // Prevent from creating array of nulls.
     if (context.isVisitLimitReached(_keyType) || context.isVisitLimitReached(_valueType)) {
@@ -26,11 +26,11 @@ class ReflectiveMapFactory implements Factory<Map<Object, Object>> {
     return result;
   }
 
-  Map createEmptyMap() {
+  Map<Object , Object> createEmptyMap() {
     final reflectedList = reflectType(Map, [_keyType, _valueType]);
-    return (reflectedList as ClassMirror).newInstance(_emptyConstructorName, <Object>[]).reflectee as Map;
+    return (reflectedList as ClassMirror).newInstance(_emptyConstructorName, <Object>[]).reflectee as Map<Object , Object>;
   }
 
   @override
-  Map getDefaultValue() => createEmptyMap();
+  Map<Object , Object> getDefaultValue() => createEmptyMap();
 }

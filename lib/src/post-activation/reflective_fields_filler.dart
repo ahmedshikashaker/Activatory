@@ -4,7 +4,7 @@ import 'package:activatory/src/internal_activation_context.dart';
 import 'package:activatory/src/post-activation/fields_auto_filling_strategy.dart';
 
 class ReflectiveFieldsFiller {
-  void fill(Object object, InternalActivationContext ctx) {
+  void fill(Object? object, InternalActivationContext ctx) {
     final fieldsStrategy = ctx.fieldsAutoFill(object.runtimeType);
     if (fieldsStrategy == FieldsAutoFillingStrategy.None) {
       return;
